@@ -1,0 +1,4 @@
+node_modules/
+assets/client_secret.json
+
+.env
