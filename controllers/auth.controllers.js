@@ -15,6 +15,7 @@ const login = async (req, res = response) => {
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(400).json({
+                ok: false,
                 msg: 'Email or password are not correct- (email)'
             });
         }
@@ -23,6 +24,7 @@ const login = async (req, res = response) => {
         // Si el usuario está activo
         if (!user.state) {
             return res.status(400).json({
+                ok: false,
                 msg: 'Email or password are not correct - (state-false)'
             });
         }
@@ -32,6 +34,7 @@ const login = async (req, res = response) => {
         const validPassword = bcryptjs.compareSync(password, user.password);
         if (!validPassword) {
             return res.status(400).json({
+                ok: false,
                 msg: 'Email or password are not correct - (password)'
             });
         }
@@ -51,7 +54,8 @@ const login = async (req, res = response) => {
     } catch (error) {
         console.log(error);
         res.status(500).json({
-            msg: 'Hable con el administrador'
+            ok: false,
+            msg: 'talk to the database administrator'
         });
     }
 
@@ -87,6 +91,7 @@ const register = async (req, res = response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
+            ok: false,
             msg: 'talk to the database administrator'
         });
     }
@@ -114,6 +119,7 @@ const renewToken = async (req, res = response) => {
     } catch (error) {
         console.log(error)
         res.status(500).json({
+            ok: false,
             msg: 'talk to the database administrator'
         });
     }

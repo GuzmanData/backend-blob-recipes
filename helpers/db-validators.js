@@ -1,4 +1,5 @@
 const User = require('../models/user.models');
+const Recipe = require('../models/recipe.models');
 
 /**
  * Devuelve una excepción si el email ya se encuentra registrado para un usuario
@@ -15,6 +16,16 @@ const emailAlreadyRegistered = async (email = '') => {
 }
 
 
+const recipeExistsById = async( id ) => {
+
+    const recipe = await Recipe.findById(id);
+    if ( !recipe ) {
+        throw new Error(`There is no recipe for the id ${ id }`);
+    }
+}
+
+
 module.exports = {
-    emailAlreadyRegistered
+    emailAlreadyRegistered,
+    recipeExistsById
 }

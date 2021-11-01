@@ -33,7 +33,7 @@ router.post('/register',
     ],
     register)
 
-router.post("/renew-token",
+router.get("/renew-token",
     [
         validateJWT,
         validateFields,
