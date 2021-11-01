@@ -1,14 +1,17 @@
 const { response } = require('express');
 const Recipe = require('../models/recipe.models');
 
+
+
+
 const createRecipe = async (req, res = response) => {
 
     const { title, img, preparation, description, ingredients } = req.body;
 
     const data = { title, img, preparation, description, ingredients, creationDate: new Date().toDateString() }
 
-
-    const recipeDb = await Recipe.findOne({ title });
+    data.title = title.trim().toUpperCase()
+    const recipeDb = await Recipe.findOne({ title: data.title });
 
     if (recipeDb) {
         return res.status(400).json({
@@ -101,7 +104,7 @@ const updateRecipe = async (req, res = response) => {
 
     try {
         const { id } = req.params;
-        const { title } = req.body;
+        const { title = title.trim().toUpperCase()  } = req.body;
 
 
         if (title) {
