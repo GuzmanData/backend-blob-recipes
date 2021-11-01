@@ -93,6 +93,67 @@ const getRecipeById = async (req, res = response) => {
             msg: 'talk to the database administrator'
         });
     }
+}
+
+
+const updateRecipe = async (req, res = response) => {
+
+
+    try {
+        const { id } = req.params;
+        const { title } = req.body;
+
+
+        if (title) {
+            const recipeDb = await Recipe.findOne({ title });
+
+            if (recipeDb) {
+                return res.status(400).json({
+                    ok: false,
+                    msg: `The recipe with the title ${title} already exists in the database`
+                });
+            }
+
+        }
+
+        const recipe = await Recipe.findByIdAndUpdate(id, req.body, { new: true });
+
+        res.json({
+            ok: true,
+            msg: "Recipe successfully updated",
+            recipe
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'talk to the database administrator'
+        });
+    }
+
+
+}
+
+
+const deleteRecipe = async (req, res = response) => {
+
+
+    try {
+        const { id } = req.params;
+        await Recipe.findByIdAndDelete(id);
+        res.json({
+            ok: true,
+            msg: "Recipe deleted successfully"
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            ok: false,
+            msg: 'talk to the database administrator'
+        });
+    }
 
 
 }
@@ -100,5 +161,7 @@ const getRecipeById = async (req, res = response) => {
 module.exports = {
     createRecipe,
     getRecipes,
-    getRecipeById
+    getRecipeById,
+    updateRecipe,
+    deleteRecipe
 }
